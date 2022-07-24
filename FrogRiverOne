@@ -1,0 +1,37 @@
+int solution(int X, vector<int> &A) 
+{
+    // write your code in C++14 (g++ 6.2.0)
+    int numOfElements = A.size();
+    if (X > numOfElements || !X)
+    {
+        return -1;
+    }
+
+    long long totalSum = (1LL+ X) * X/2;
+    int posArray[100001] = {};
+    int earliestTime = 0;
+    long long sum = 0;
+
+    for (auto el:A)
+    {
+        if (posArray[el] == 0)
+        {
+            posArray[el] = 1;
+            sum += el;
+           
+            //cout << "totalSum=" << totalSum << " sum=" << sum << " earliestTime=" << earliestTime<< endl;    
+        }
+        if ( sum == totalSum) break;
+        earliestTime++;
+    }
+
+    if ( sum != totalSum)
+    {
+        earliestTime = -1;
+    }
+
+    return earliestTime;
+
+
+
+}
