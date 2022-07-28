@@ -1,0 +1,42 @@
+// you can use includes, for example:
+#include <algorithm>
+
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+int solution(vector<int> &A) 
+{
+    // write your code in C++14 (g++ 6.2.0)
+    int startSlicePosition = -1;
+    //float minAvg2 = 0;
+    //float minAvg3 = 0;
+    float minAvgGlobal = 0xfffffff;
+    float minAvgCurrent = 0xfffffff;
+    int len = A.size();
+    if (len < 3) return 0;
+    
+    for (int i = 0; i < len - 2; i++)
+    {
+        float minAvg2 = (float)(A[i] + A[i+1])/2;
+        minAvgCurrent = min(minAvg2 , minAvgCurrent);
+        float minAvg3 = (float)(A[i] + A[i+1] + A[i+2])/3;
+        minAvgCurrent = min(minAvg3, minAvgCurrent);
+        
+        if (minAvgGlobal > minAvgCurrent)
+        {
+            minAvgGlobal = minAvgCurrent;
+            startSlicePosition = i;
+        } 
+
+       //cout << "i=" << i << " minAvg2=" <<minAvg2<<" minAvg3=" <<minAvg3<< " minAvgCurrent="<< minAvgCurrent << " minAvgGlobal=" << minAvgGlobal << " startPos=" << startSlicePosition <<endl;   
+    }
+    minAvgCurrent = (A[len-1] + A[len-2])/2;
+    if (minAvgGlobal > minAvgCurrent)
+    {
+        minAvgGlobal = minAvgCurrent;
+        startSlicePosition = len-2;
+    }
+
+    return startSlicePosition;
+
+}
