@@ -1,0 +1,54 @@
+// you can use includes, for example:
+
+
+#include <algorithm>
+
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+int solution(vector<int> &A) 
+{
+    // write your code in C++14 (g++ 6.2.0)
+    int len = A.size();
+    long long  product = 0LL;
+    if (len == 3)
+    {
+        product = A[0]*A[1]*A[2];
+
+    }
+    else if (len > 3)
+    {
+        sort(A.begin(),A.end());
+        int maxNegative1 = (A[0] <0) ? A[0]: 0;         
+        int maxNegative2 = (A[1] <0) ? A[1]: 0;
+        int maxPositive1 = (A[len-1] > 0) ? A[len-1]:0;
+        int maxPositive2 = (A[len-2] > 0) ? A[len-2]:0;
+        int maxPositive3 = (A[len-3] > 0) ? A[len-3]:0;
+
+        if ( A[len-1] < 0) // all negatives
+        {
+            product = A[len-3]*A[len-2]*A[len-1];        
+        }  
+        else  if (!maxNegative2) // all positives   
+        {
+            product = maxPositive1*maxPositive2*maxPositive3;
+        }
+        else // mixed case of negatives and positives
+        {
+            //one or two positives
+            if (!maxPositive3)
+            {
+                product = maxPositive1*maxNegative1*maxNegative2;
+            }
+            else 
+            {
+                int firstMultiplier = max(maxNegative1 * maxNegative2, maxPositive3 * maxPositive2);
+               // cout << "firstMultiplier=" << firstMultiplier << endl;
+                product = firstMultiplier * maxPositive1; 
+            }              
+        }  
+    }
+
+
+    return product;
+}
