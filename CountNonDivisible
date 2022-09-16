@@ -1,0 +1,74 @@
+// you can use includes, for example:
+#include <algorithm>
+#include <unordered_map>
+#include <math.h>
+
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+vector<int> solution(vector<int> &A) 
+{
+    // write your code in C++14 (g++ 6.2.0)
+    unordered_map<int,int> arrElementMap;
+    unordered_map<int,int> divisorsMap;
+    vector<int> nondivisors;
+
+    for (int el:A)
+    {
+       
+            std::pair<int,int> pair(el,1);
+            auto retVal = arrElementMap.insert(pair);
+            if (!retVal.second)
+            {
+                retVal.first->second++;
+            }
+            
+            //cout << "key=" << el << " value=" << arrElementMap[el] << endl;    
+        
+    }
+
+    for (auto& el:arrElementMap)
+    {
+        int n = el.first;
+       // cout << "key=" << n << endl;
+        int divisor = 0;
+        for (int i = 1; i <= (int)sqrt(n); i++)
+        {
+            if ( i *i == n)
+            {
+                auto res = arrElementMap.find(i);
+                if  (res != arrElementMap.end())
+                {
+                    divisor += res->second;
+                }
+                break;
+            }
+            else  if (n % i == 0)
+            {
+                auto res = arrElementMap.find(i);
+                if  (res != arrElementMap.end())
+                {
+                    divisor += res->second;
+                }
+
+                int opposite = n / i;
+                res = arrElementMap.find(opposite);
+                if  (res != arrElementMap.end())
+                {
+                    divisor += res->second;
+                }
+            }
+        }
+        std::pair<int,int> pair1(n,divisor);
+        divisorsMap.insert(pair1);
+    }
+
+   
+
+    for (int i = 0; i < A.size(); i++)
+    {
+        nondivisors.push_back(A.size()-divisorsMap[A[i]]);  
+    }
+
+    return nondivisors;
+}
